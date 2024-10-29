@@ -1,4 +1,5 @@
 // Barrett Koster
+// line for github test
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +71,7 @@ class Yak2 extends StatelessWidget
 
     MsgCubit mc = BlocProvider.of<MsgCubit>(context);
     return Column
-    ( children: // tweakjhbjhbjhbj
+    ( children: 
       [ Text("Yakking"),
         Text(mc.state.ised),
         Text(mc.state.used),
