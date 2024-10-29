@@ -59,24 +59,6 @@ class News1 extends StatelessWidget
         return c;
       },
     );
-    /*
-    return StreamBuilder 
-    ( stream: ts,
-      builder: ( context, snapshot) 
-      {    Column c = Column(children: [ Text("0"), ] );
-
-        if ( snapshot.hasData ) 
-        { all.add(snapshot.data!);   
-          print("trying to add ...${snapshot.data!}");
-        }
-        for ( int i in all )
-        {
-          c.children.add( Text("$i"));
-        }
-        return c;
-      }
-    );
-    */
   }
 
   // return the top news story numbers as a stream
@@ -90,6 +72,7 @@ class News1 extends StatelessWidget
     }
   }
 
+  // returns the top news stories as a stream
   Stream<NewsItem> topStreamItems() async*
   { String root = "https://hacker-news.firebaseio.com/v0/";
     List<int> topList = await getTopNumbers();
