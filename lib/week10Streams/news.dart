@@ -32,9 +32,11 @@ class News1 extends StatelessWidget
   @override
   Widget build( BuildContext context )
   { 
+    // stream of just the numbers
     Stream<int> ts = topStream();
     List<int> all = [];
 
+    // stream of news items, includes the headline
     Stream<NewsItem> sni = topStreamItems();
     List<NewsItem> allni = [];
 
