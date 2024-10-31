@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'newsItem.dart';
+import '../widgets/bb.dart';
+import 'news_item_page.dart';
 
 void main()
 { runApp( News() ); }
@@ -41,19 +43,32 @@ class News1 extends StatelessWidget
     List<NewsItem> allni = [];
 
 
-    return StreamBuilder
+    return StreamBuilder  
     ( stream: sni,
-      builder: ( context, snapshot )
+      builder: ( context, snapshot )     
       { Column c  = Column( children: [ Text("items")] );
         if (snapshot.hasData )
         { allni.add( snapshot.data! ); }
+        else { return BB("loading"); } 
         for ( NewsItem ni in allni )
         { 
           c.children.add
           ( Row
             ( children:
               [ Text('${ni.id}'),
-                Text(ni.headline),
+                // Text(ni.headline),
+                ElevatedButton
+                ( onPressed: ()
+                  { Navigator.push
+                    ( context, 
+                      MaterialPageRoute
+                      ( builder: (context)
+                        { return NewsItemPage( ni.id ); }
+                      ) 
+                    );
+                  },
+                  child: Text(ni.headline),
+                ),
               ],
             )
           );
@@ -100,7 +115,7 @@ class News1 extends StatelessWidget
     List<dynamic> dataList = jsonDecode(response.body);
     // print(dataList);
     List<int> topList = [];
-    for ( int i=0; i<10; i++ )
+    for ( int i=0; i<15; i++ )
     {
         topList.add( dataList[i] );
     }
