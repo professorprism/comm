@@ -13,7 +13,7 @@ void main( List<String> args) async
   String name = "bob";
   if ( args.length>0 )
   { name = args[0]; }
-  countStream(name);
+  countStream(name); // keeps runing after main ends
 }
 
   // Stream<int> countStream( String s ) async*
