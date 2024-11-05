@@ -30,29 +30,20 @@ void main() async
     },
   );
 
-  print("talk: ");
+  print("talk ('bye' to quit): ");
   String? sed = stdin.readLineSync();
-  while (sed! != "quit")
-  { print("trying to send: $sed");
+  while (sed! != "bye")
+  { // print("trying to send: $sed");
     await sendMessage(socket,sed);
-    print("talk: ");
+    print("talk ('bye' to quit): ");
     sed = stdin.readLineSync();
   }
-
-
-  // send some messages to the server
-  await sendMessage(socket, 'Knock, knock.');
-  await sendMessage(socket, 'Banana');
-  await sendMessage(socket, 'Banana');
-  await sendMessage(socket, 'Banana');
-  await sendMessage(socket, 'Banana');
-  await sendMessage(socket, 'Banana');
-  await sendMessage(socket, 'Orange');
-  await sendMessage(socket, "Orange you glad I didn't say banana again?");
+  await sendMessage(socket,sed); // has to be 'bye'
+  exit(0);
 }
 
-Future<void> sendMessage(Socket socket, String message) async {
-  print('Client: $message');
+Future<void> sendMessage(Socket socket, String message) async 
+{ print('Client: $message');
   socket.write(message);
   await Future.delayed(Duration(seconds: 2));
 }

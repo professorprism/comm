@@ -13,8 +13,34 @@ void main() async
   // listen for clent connections to the server
   server.listen((client) {
     handleConnection(client);
-    
+    converse( client );
   });
+}
+
+Future<void> converse( Socket socket) async
+{
+  // print("talk ('bye' to quit): ");
+  stdout.write("server: ");
+  String? sed = stdin.readLineSync();
+  while (sed! != "bye")
+  { // print("trying to send: $sed");
+    await 
+    sendMessage(socket,sed);
+    // print("talk ('bye' to quit): ");
+    stdout.write("server: ");
+    sed = stdin.readLineSync();
+  }
+  await sendMessage(socket,sed); // has to be 'bye'
+  socket.close();
+  exit(0);
+
+}
+
+Future<void> sendMessage(Socket socket, String message) async 
+{ print('Server: $message');
+  socket.write(message);
+  // socket.flush();
+  await Future.delayed(Duration(seconds: 2));
 }
 
 void handleConnection(Socket client)
@@ -27,12 +53,9 @@ void handleConnection(Socket client)
   ( (Uint8List data) async 
     {
       final message = String.fromCharCodes(data);
-      print("msg from client: $message");
-      await Future.delayed(Duration(seconds: 1));
-      if (message == 'Knock, knock.')
-      { client.write('Who is there?');
-      }
-      else if (message=="hi")
+      print("client: $message");
+      // await Future.delayed(Duration(seconds: 1));
+      if (message=="hi")
       { client.write("hi, back"); }
       else if (message=="bye")
       { client.write('ok, bye');
