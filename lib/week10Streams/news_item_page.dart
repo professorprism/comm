@@ -34,6 +34,7 @@ Future<NewsItem> fetch( int id ) async
       final url = Uri.parse('${root}item/${id}.json');
       final response = await http.get(url);
       Map<String,dynamic> theItem = jsonDecode(response.body);
+print(theItem);
       NewsItem ni = NewsItem.fromJson( theItem );
   return ni;
 }
