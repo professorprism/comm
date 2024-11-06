@@ -4,6 +4,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+// in https://github.com/professorprism/comm
 
 void main() async
 { 
@@ -17,6 +18,8 @@ void main() async
   });
 }
 
+// waits for user to type in THIS window and sends it
+// to the client window.
 Future<void> converse( Socket socket) async
 {
   // print("talk ('bye' to quit): ");
