@@ -52,11 +52,14 @@ class YakC2 extends StatelessWidget
     Column c = Column(children:[]);
     c.children.add
     (
-      SizedBox
-      ( height: 50, width: 200,
-        child: TextField
-        (controller:tec, style:TextStyle(fontSize:25)), 
-      ),
+          Container
+          ( decoration: BoxDecoration( border: Border.all() ),
+            child: SizedBox
+            ( height: 50, width: 200,
+              child: TextField
+              (controller:tec, style:TextStyle(fontSize:25)), 
+            ),
+          ),
     );
     c.children.add
     ( ElevatedButton

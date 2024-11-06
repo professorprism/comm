@@ -8,7 +8,7 @@ import 'msg_state.dart';
 class ClientState
 {
   Socket? client;
-  bool csset = false;
+  bool isSet = false;
 
   ClientState();
 }

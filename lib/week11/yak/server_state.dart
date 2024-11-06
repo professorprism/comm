@@ -12,11 +12,11 @@ import 'msg_state.dart';
 class ServerState
 {
   ServerSocket? ss;
-  bool ssset = false; // false until we get it set
+  bool isSet = false; // false until we get it set
 
   ServerState(); // default state does nothing; server is NOT set yet.
 
-  ServerState.set(this.ss) : ssset=true;
+  ServerState.set(this.ss) : isSet=true;
 }
 
 class ServerCubit extends Cubit<ServerState>
@@ -25,8 +25,9 @@ class ServerCubit extends Cubit<ServerState>
 
   Future<void> setup( MsgCubit mc) async
   {
-    if (!state.ssset)
+    if (!state.isSet)
     {
+      await Future.delayed( Duration(seconds:4));
       final server = await ServerSocket.bind(InternetAddress.anyIPv4, 9201);
       print("server socket created");
       // listen for clent connections to the server
