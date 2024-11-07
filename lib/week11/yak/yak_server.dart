@@ -18,7 +18,7 @@ class YakServer extends StatelessWidget
   { return Scaffold
     ( appBar: AppBar( title: Text("YakServer"), ),
       body: BlocProvider<MsgCubit>
-      ( create: (context) => MsgCubit(),
+      ( create: (context) => MsgCubit(true),
         child: BlocProvider<ServerCubit>
         ( create: (context) => ServerCubit(),
           child: BlocProvider<ClientCubit>
@@ -51,15 +51,14 @@ class YakS2 extends StatelessWidget
   { MsgCubit mc = BlocProvider.of<MsgCubit>(context);
     ServerCubit sc = BlocProvider.of<ServerCubit>(context);
     ClientCubit cc = BlocProvider.of<ClientCubit>(context);
-    // if the server cubit does not have a server socket, call it.
-    // and display 'loading'.
 
+    // if the server cubit does not have a server socket, call it.
+    //         and display 'loading'.
     // else (server socket exists) ...
     // if a client has not connected display 'waiting for client'
     // else display the box ready for messages
-
     if ( !sc.state.isSet )
-    { sc.setup(mc);
+    { sc.setup(mc,cc);
       return BB("server socket being created"); 
     }
     else

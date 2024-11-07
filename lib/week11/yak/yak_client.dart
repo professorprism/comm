@@ -15,22 +15,25 @@ import '../../widgets/bb.dart';
 
 class YakClient extends StatelessWidget
 {
-  final serverIP;
-  YakClient( this.serverIP,{super.key});
+  final serverID;
+  YakClient( this.serverID,{super.key});
 
   @override
   Widget build(BuildContext context)
   { return Scaffold
     ( appBar: AppBar( title: Text("YakClient"), ),
       body: BlocProvider<MsgCubit>
-      ( create: (context) => MsgCubit(),
-        child: Builder
-        (builder: (context)
-          { return BlocBuilder<MsgCubit,Msg>
-            ( builder: (context,state)
-              { return YakC2(serverIP); },
-            );
-          },
+      ( create: (context) => MsgCubit(false),
+        child: BlocProvider<ClientCubit>
+        ( create: (context) => ClientCubit(),
+          child: BlocBuilder<MsgCubit,Msg>
+          ( builder: (context,state)
+            { return BlocBuilder<ClientCubit,ClientState>
+              ( builder: (context,state)
+                { return YakC2(serverID); },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -39,19 +42,36 @@ class YakClient extends StatelessWidget
 
 class YakC2 extends StatelessWidget
 {
-  final String serverIP;
-  YakC2( this.serverIP, {super.key});
+  final String serverID;
+  YakC2( this.serverID, {super.key});
 
   @override
   Widget build( BuildContext context ) 
   { MsgCubit mc = BlocProvider.of<MsgCubit>(context);
+    ClientCubit cc = BlocProvider.of<ClientCubit>(context);
     TextEditingController tec = TextEditingController();
   
-    // Future<Socket> fs = clientSetup(mc, serverIP);
- 
-    Column c = Column(children:[]);
-    c.children.add
-    (
+    // if there is no client connection yet,
+    //    print "trying to connect" and call setup().
+    // else (there IS a client connection)
+    //    display the conversation as a place to say more.
+    if ( !cc.state.isSet ) // if no client connection 
+    { cc.setup(mc,serverID); // try to connect, and
+      return BB("trying to connect to server"); // display 'trying...'
+    }
+    else // there IS a client connection 
+    {    // show conversation and place to type more
+      Column c = Column(children:[]);
+      for ( String s in mc.state.conversation )
+      { c.children.add
+        ( BB( s ),
+        );
+      }
+      return Column
+      ( children:
+        [ SingleChildScrollView
+          ( child: c,
+          ),
           Container
           ( decoration: BoxDecoration( border: Border.all() ),
             child: SizedBox
@@ -60,25 +80,16 @@ class YakC2 extends StatelessWidget
               (controller:tec, style:TextStyle(fontSize:25)), 
             ),
           ),
-    );
-    c.children.add
-    ( ElevatedButton
-      ( onPressed: ()
-        { String msg = tec.text;
-          mc.upi(msg); 
-          // sendMessage( , msg );
-        },
-        child: BB("client send"),
-      )
-    );
-    for ( String s in mc.state.conversation )
-    { c.children.add
-      ( Text( s ),
+          ElevatedButton
+          ( onPressed: ()
+            { String msg = tec.text;
+              mc.upi(msg); 
+              // sendMessage( , msg );
+            },
+            child: BB("client send"),
+          )
+        ],
       );
     }
-
-    return SingleChildScrollView
-    ( child: c,
-    );
   }
 }

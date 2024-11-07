@@ -11,36 +11,54 @@ class ClientState
   bool isSet = false;
 
   ClientState();
+  ClientState.set(this.client);
 }
 
 class ClientCubit extends Cubit<ClientState>
 {
   ClientCubit(): super( ClientState() );
 
-  Future<Socket> clientSetup( MsgCubit mc, String serverIP) async
+  // This 1-arg version of got is for generatine responses to
+  // incomding messages
+  void got( String s )
   {
-    // connect to the socket server
-    final socket = await Socket.connect(serverIP, 9201);
-    print('Connected to: ${socket.remoteAddress.address}:${socket.remotePort}');
+    /*              if (message=="hi")
+              { client.write("hi, back"); }
+              else if (message=="bye")
+              { client.write('ok, bye');
+                client.close();
+              } */
+  }
 
-    // listen for responses from the server
-    socket.listen
-    ( (Uint8List data)
-      { final serverResponse = String.fromCharCodes(data);
-        print('Server: $serverResponse');
-      },
+  Future<void> setup( MsgCubit mc, String serverID) async
+  {
+    if (!state.isSet)
+    { state.isSet = true; // only runs once
+      // connect to the socket server
+      final socket = await Socket.connect(serverID, 9201);
+      mc.upi('Connected to: ${socket.remoteAddress.address}:${socket.remotePort}');
+      
 
-      onError: (error) {
-        print(error);
-        socket.destroy();
-      },
+      // listen for responses from the server
+      socket.listen
+      ( (Uint8List data)
+        { final serverResponse = String.fromCharCodes(data);
+          mc.upu(serverResponse);
+        },
 
-      onDone: () {
-        print('Server left.');
-        socket.destroy();
-      },
-    );
-    return socket;
+        onError: (error) {
+          mc.upi(error);
+          socket.destroy();
+        },
+
+        onDone: () {
+          mc.upi('Server left.');
+          socket.destroy();
+          emit( ClientState() );
+        },
+      );
+      emit( ClientState.set(socket) );
+    }
   }
   
   Future<void> sendMessage(Socket socket, String message) async 

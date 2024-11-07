@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'msg_state.dart';
+import 'client_state.dart';
 
 
 class ServerState
@@ -23,17 +24,17 @@ class ServerCubit extends Cubit<ServerState>
 {
   ServerCubit() : super( ServerState() );
 
-  Future<void> setup( MsgCubit mc) async
+  Future<void> setup( MsgCubit mc, ClientCubit cc) async
   {
     if (!state.isSet)
     {
       await Future.delayed( Duration(seconds:4));
       final server = await ServerSocket.bind(InternetAddress.anyIPv4, 9201);
-      print("server socket created");
+      mc.upi("server socket created");
       // listen for clent connections to the server
       server.listen
       ( (client)
-        { print('Connection from'
+        { mc.upi('Connection from'
             ' ${client.remoteAddress.address}:${client.remotePort}');
 
           // listen for events from the client
@@ -41,25 +42,22 @@ class ServerCubit extends Cubit<ServerState>
           ( (Uint8List data) async 
             {
               final message = String.fromCharCodes(data);
-              print("client: $message");
-              // await Future.delayed(Duration(seconds: 1));
-              if (message=="hi")
-              { client.write("hi, back"); }
-              else if (message=="bye")
-              { client.write('ok, bye');
-                client.close();
-              } 
+              mc.upu(message);
+
+// at this point, think we want to send any message to the
+// cc update.  
+              // cc.got(message);
             },
 
             // handle errors
             onError: (error) {
-              print(error);
+              mc.upu(error);
               client.close();
             },
 
             // handle the client closing the connection
             onDone: ()
-            { print('Client left');
+            { mc.upi('Client left');
               client.close();
             },
           );
