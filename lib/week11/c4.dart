@@ -7,9 +7,12 @@ import 'dart:typed_data';
 
 void main() async
 {
+  String? where = 'localhost';
+  where = stdin.readLineSync();
+
 
   // connect to the socket server
-  final socket = await Socket.connect('localhost', 9201);
+  final socket = await Socket.connect(where, 9201);
   print('Connected to: ${socket.remoteAddress.address}:${socket.remotePort}');
 
   // listen for responses from the server
