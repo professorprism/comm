@@ -2,44 +2,16 @@
 // demo of resizing
 
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:window_manager/window_manager.dart';
-
 import 'widgets/bb.dart';
-
-/*
-import 'package:flutter/material.dart';
-import 'package:window_manager/window_manager.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Must add this line.
-  await windowManager.ensureInitialized();
-
-  WindowOptions windowOptions = WindowOptions(
-    size: Size(800, 600),
-    center: true,
-    backgroundColor: Colors.transparent,
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
-  );
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
-
-  runApp(MyApp());
-}
-*/
 
 void main() async
 { 
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = WindowOptions(
-    size: Size(650, 400),
+  WindowOptions windowOptions = WindowOptions
+  ( size: Size(650, 400),
     center: false,
     backgroundColor: Colors.yellow, // Colors.transparent,
     skipTaskbar: false,
@@ -61,25 +33,12 @@ void main() async
 
 class Resizer extends StatelessWidget 
 { const Resizer({super.key});
-  // final WindowManager wm = WindowManager();
 
   @override
   Widget build(BuildContext context) 
-  { return Container
-    ( 
-      // not working
-      // height:300, width:300, 
-
-      // not working
-      // constraints: BoxConstraints(maxHeight: 400, maxWidth: 500),
-
-      // await 
-      // windowManager.setSize(size: Size(800, 600));
-
-      child: const MaterialApp
-      ( title: 'Resizer',
-        home:  Resizer1(),
-      )
+  { return  MaterialApp
+    ( title: 'Resizer',
+      home:  Resizer1(),
     );
   }
 }

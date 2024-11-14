@@ -46,6 +46,9 @@ dependencies:
   flutter_sound: ^9.2.13
   permission_handler: ^11.3.1
   window_manager: ^0.4.3
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +66,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  # trying to get localizations to work
+  generate: true 
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
