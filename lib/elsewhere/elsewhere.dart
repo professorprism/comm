@@ -1,5 +1,6 @@
 // Barrett Koster 2024
-// demo of resizing
+// demo of localizations
+// https://localizely.com/blog/flutter-localization-step-by-step/?tab=using-gen-l10n
 
 // > flutter pub add flutter_localizations --sdk=flutter
 // > flutter pub add intl:any
@@ -8,11 +9,10 @@
 // flutter:
 //   generate:true 
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// import '../widgets/bb.dart';
+import '../widgets/bb.dart';
 
 void main() async
 { runApp(const ElseWhere());
@@ -40,7 +40,7 @@ class ElseWhere1 extends StatelessWidget
   Widget build(BuildContext context)
   { 
     List<Widget> kids = 
-    [ Text("bob"),  Text("mary"), Text("jane"), 
+    [ BB("bob"),  BB("mary"), BB("jane"), 
       Text(AppLocalizations.of(context)!.helloWorld),
       Localizations.override
       (
@@ -57,7 +57,7 @@ class ElseWhere1 extends StatelessWidget
 
     return Scaffold
     (
-      appBar: AppBar( title: Text("Resize"),  ),
+      appBar: AppBar( title: Text("LocalizeMe"),  ),
       body: Column( children: kids ),
     );
   }
