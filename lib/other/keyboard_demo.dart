@@ -65,7 +65,7 @@ class KD1 extends StatelessWidget
             ), 
           ),
         ),
-        kc.state.showit ? KeyBoard( tec ) : Text("zip"),
+        kc.state.showit ? KeyBoard( tec ) : Text("xxx"),
       ],
     );
   }
