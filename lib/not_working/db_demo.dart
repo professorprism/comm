@@ -16,7 +16,12 @@ class ShowState
 class ShowCubit extends Cubit<ShowState>
 {
   ShowCubit() : super( ShowState( Item() ) );
-  set( Item i ) { emit( ShowState(i) ); }
+  void set( Item i ) { emit( ShowState(i) ); }
+  void fetchItem( DBProvider dbp, int id ) async
+  { Item? item = await dbp.fetchItem(id);
+    if ( item==null ) { item = Item(); }
+    emit( ShowState(item) );
+  }
 }
 
 void main() async
@@ -40,7 +45,7 @@ class DB extends StatelessWidget
         ( create: (context) => ShowCubit(),
           child: BlocBuilder<ShowCubit,ShowState>
           ( builder: (context,state)
-            { return KD1(); },
+            { return DD1(dbp); },
           ),
         ),
       ),
@@ -48,8 +53,9 @@ class DB extends StatelessWidget
   }
 }
 
-class KD1 extends StatelessWidget 
-{ KD1({super.key});
+class DD1 extends StatelessWidget 
+{ final DBProvider dbp;
+  DD1(this.dbp,{super.key});
   final TextEditingController tec = TextEditingController();
 
   @override
@@ -59,7 +65,7 @@ class KD1 extends StatelessWidget
     TextEditingController tecName = TextEditingController();
     TextEditingController tecColor = TextEditingController();
     TextEditingController tecAge = TextEditingController();
-
+    print("-------------------- building KD1");
  
     Item item = sc.state.currentItem;
     tecId.text = item.id.toString();
@@ -79,7 +85,26 @@ class KD1 extends StatelessWidget
           ],
         ),
         Column // buttons to add or find go in this column
-        (
+        ( children:
+          [ ElevatedButton
+            ( onPressed: ()
+              { Item item = Item.fill
+                ( int.parse(tecId.text),
+                  tecName.text,
+                  tecColor.text,
+                  int.parse(tecAge.text),
+                );
+                dbp.addItem(item);
+              },
+              child: Text("save"),
+            ),
+            ElevatedButton
+            ( onPressed: ()
+              { sc.fetchItem(dbp,int.parse(tecId.text));
+              },
+              child: Text("load by id"),
+            ),
+          ],
         ),
       ],
     );

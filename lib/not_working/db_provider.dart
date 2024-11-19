@@ -4,7 +4,8 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sqflite/sqflite.dart';
+//import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_common_ffi.dart';
 
 import 'item.dart';
 
@@ -44,10 +45,11 @@ class DBProvider
     );
 
     ready = true;
+    print("------------ db ready");
   }
 
   Future<Item?> fetchItem( int id ) async
-  {
+  { print("----------- trying to fetch $id");
     final maps = await db!.query
     ( "Item",
       columns: null, // could specify just some, eg ["title"]
@@ -67,6 +69,7 @@ class DBProvider
 
   Future<int> addItem( Item item )
   {
+    print("trying to add to db item id=${item.id}");
     return db!.insert
     ( 'Item',  
       item.toMap(),

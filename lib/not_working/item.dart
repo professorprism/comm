@@ -23,7 +23,9 @@ class Item
     age = parsedJson['age'] ?? 151
   ;
 
-   Item() : id=997, name="bobby", color="rosada", age=200;
+  Item() : id=997, name="bobby", color="rosada", age=200;
+
+  Item.fill(this.id,this.name,this.color,this.age);
 
   Map<String,dynamic> toMap()
   {
